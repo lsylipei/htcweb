@@ -1,4 +1,3 @@
-
 package condor;
 
 import javax.xml.bind.JAXBElement;
@@ -8,11 +7,13 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementRef;
 import javax.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for ClassAdStructArrayAndStatus complex type.
+ * <p>
+ * Java class for ClassAdStructArrayAndStatus complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="ClassAdStructArrayAndStatus">
@@ -30,63 +31,61 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "ClassAdStructArrayAndStatus", propOrder = {
-    "status",
-    "classAdArray"
-})
+@XmlType(name = "ClassAdStructArrayAndStatus", propOrder = { "status", "classAdArray" })
 public class ClassAdStructArrayAndStatus {
 
-    @XmlElement(required = true)
-    protected Status status;
-    @XmlElementRef(name = "classAdArray", type = JAXBElement.class, required = false)
-    protected JAXBElement<ClassAdStructArray> classAdArray;
+	@Override
+	public String toString() {
+		return "ClassAdStructArrayAndStatus [status=" + status + ", classAdArray=" + classAdArray.getValue() + "]";
+	}
 
-    /**
-     * Gets the value of the status property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Status }
-     *     
-     */
-    public Status getStatus() {
-        return status;
-    }
+	@XmlElement(required = true)
+	protected Status status;
+	@XmlElementRef(name = "classAdArray", type = JAXBElement.class, required = false)
+	protected JAXBElement<ClassAdStructArray> classAdArray;
 
-    /**
-     * Sets the value of the status property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Status }
-     *     
-     */
-    public void setStatus(Status value) {
-        this.status = value;
-    }
+	/**
+	 * Gets the value of the status property.
+	 * 
+	 * @return possible object is {@link Status }
+	 * 
+	 */
+	public Status getStatus() {
+		return status;
+	}
 
-    /**
-     * Gets the value of the classAdArray property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link JAXBElement }{@code <}{@link ClassAdStructArray }{@code >}
-     *     
-     */
-    public JAXBElement<ClassAdStructArray> getClassAdArray() {
-        return classAdArray;
-    }
+	/**
+	 * Sets the value of the status property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link Status }
+	 * 
+	 */
+	public void setStatus(Status value) {
+		this.status = value;
+	}
 
-    /**
-     * Sets the value of the classAdArray property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link JAXBElement }{@code <}{@link ClassAdStructArray }{@code >}
-     *     
-     */
-    public void setClassAdArray(JAXBElement<ClassAdStructArray> value) {
-        this.classAdArray = value;
-    }
+	/**
+	 * Gets the value of the classAdArray property.
+	 * 
+	 * @return possible object is {@link JAXBElement }{@code <}
+	 *         {@link ClassAdStructArray }{@code >}
+	 * 
+	 */
+	public JAXBElement<ClassAdStructArray> getClassAdArray() {
+		return classAdArray;
+	}
+
+	/**
+	 * Sets the value of the classAdArray property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link JAXBElement }{@code <}
+	 *            {@link ClassAdStructArray }{@code >}
+	 * 
+	 */
+	public void setClassAdArray(JAXBElement<ClassAdStructArray> value) {
+		this.classAdArray = value;
+	}
 
 }
