@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core">
+
+<f:loadBundle basename="resources.application" var="msg"/>
+<f:loadBundle basename="resources.application" var="test"/>
+
+<head>
+<style>
+#header {
+    background-color:black;
+    color:white;
+    text-align:center;
+    padding:5px;
+}
+#nav {
+    line-height:30px;
+    background-color:#eeeeee;
+    height:300px;
+    width:100px;
+    float:left;
+    padding:5px;	      
+}
+#section {
+    width:350px;
+    float:left;
+    padding:10px;	 	 
+}
+#footer {
+    background-color:black;
+    color:white;
+    clear:both;
+    text-align:center;
+   padding:5px;	 	 
+}
+</style>
+
+    <title>error</title>
+</head>
+
+<body>
+<div id="header"></div>
+<div id="nav">
+London<br />
+Paris<br />
+Tokyo<br />
+</div>
+
+<div id="section">
+<h3><h:outputText value="#{msg.welcomeHeading}" /></h3>
+<p><h:outputText value="#{msg.welcomeMessage}" />
+	</p>
+</div>
+
+<div id="footer">Copyright © Pei Li 2015</div>
+</body>
+</html>
