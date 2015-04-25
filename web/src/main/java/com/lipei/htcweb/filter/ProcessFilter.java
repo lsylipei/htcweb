@@ -8,14 +8,10 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.lang3.StringUtils;
 
 public class ProcessFilter implements Filter {
 
-	private static final String LOGIN_URL = "/index.xhtml";
+	private static final String LOGIN_URL = "/";
 
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
@@ -26,18 +22,6 @@ public class ProcessFilter implements Filter {
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException,
 			ServletException {
-
-		HttpServletRequest req = (HttpServletRequest) request;
-		if (StringUtils.equals(req.getServletPath(), LOGIN_URL)) {
-			chain.doFilter(request, response);
-			return;
-		}
-		Object obj = req.getSession().getAttribute("auth");
-		if (obj == null) {
-			HttpServletResponse res = (HttpServletResponse) response;
-			res.sendRedirect(req.getContextPath() + LOGIN_URL);
-			return;
-		}
 
 		chain.doFilter(request, response);
 	}
