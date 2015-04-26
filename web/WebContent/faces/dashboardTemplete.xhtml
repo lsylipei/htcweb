@@ -1,0 +1,34 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core">
+<head>
+
+<h:outputStylesheet name="main.css" library="default"></h:outputStylesheet>
+    <title><ui:insert name="title"></ui:insert>></title>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="nav">
+<h:panelGrid columns="1">
+<h:link outcome="dashboard.xhtml" value="Main"/>
+<h:link outcome="dashboard.xhtml" value="Main"/>
+<h:link outcome="dashboard.xhtml" value="Main"/>
+<h:link outcome="dashboard.xhtml" value="Main"/>
+<h:link outcome="setting.xhtml" value="Setting"/>
+</h:panelGrid>
+</div>
+
+<div id="section">
+<ui:insert name="content"></ui:insert>
+
+</div>
+
+<div id="footer">Copyright © Pei Li 2015</div>
+</body>
+</html>

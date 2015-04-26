@@ -28,10 +28,6 @@
  </servlet>
  <servlet-mapping>
   <servlet-name>Faces Servlet</servlet-name>
-  <url-pattern>/faces/*</url-pattern>
- </servlet-mapping>
- <servlet-mapping>
-  <servlet-name>Faces Servlet</servlet-name>
   <url-pattern>*.jsf</url-pattern>
  </servlet-mapping>
  <servlet-mapping>
@@ -47,11 +43,11 @@
   <mime-type>text/html</mime-type>
  </mime-mapping>
  <welcome-file-list>
-  <welcome-file>/faces/login.xhtml</welcome-file>
+  <welcome-file>/login.xhtml</welcome-file>
  </welcome-file-list>
  <error-page>
   <error-code>404</error-code>
-  <location>/faces/error.xhtml</location>
+  <location>/error.xhtml</location>
  </error-page>
  <security-constraint>
   <display-name>test</display-name>
