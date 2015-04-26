@@ -4,17 +4,21 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
     xmlns:ui="http://java.sun.com/jsf/facelets"
     xmlns:h="http://java.sun.com/jsf/html"
-    xmlns:f="http://java.sun.com/jsf/core">
-<head>
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:p="http://primefaces.org/ui">
+    
+<h:head>
 
 <h:outputStylesheet name="main.css" library="default"></h:outputStylesheet>
     <title><ui:insert name="title"></ui:insert>></title>
-</head>
+</h:head>
 
-<body>
+<h:body>
 <div class="header"></div>
 
-<div class="nav">
+<p:layout>
+
+<p:layoutUnit position="west" resizable="false" size="150" minSize="40">
 <h:panelGrid columns="1">
 <h:link outcome="dashboard.xhtml" value="Main"/>
 <h:link outcome="dashboard.xhtml" value="Main"/>
@@ -22,13 +26,13 @@
 <h:link outcome="dashboard.xhtml" value="Main"/>
 <h:link outcome="setting.xhtml" value="Setting"/>
 </h:panelGrid>
-</div>
+</p:layoutUnit>
 
-<div id="section">
+<p:layoutUnit position="center">
 <ui:insert name="content"></ui:insert>
+</p:layoutUnit>
 
-</div>
+</p:layout>
 
-<div id="footer">Copyright © Pei Li 2015</div>
-</body>
+</h:body>
 </html>

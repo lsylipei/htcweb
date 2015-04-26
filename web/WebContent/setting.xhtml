@@ -4,7 +4,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
     xmlns:ui="http://java.sun.com/jsf/facelets"
     xmlns:h="http://java.sun.com/jsf/html"
-    xmlns:f="http://java.sun.com/jsf/core">
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:p="http://primefaces.org/ui">
 
 <ui:composition template="/faces/dashboardTemplete.xhtml">
 
@@ -12,9 +13,39 @@
 <ui:define name="title">Dashboard</ui:define>
 
 <ui:define name="content">
+<h:form>
+<div style="text-align:right">
+<p:commandButton value="Add..." type="button" onclick="PF('addDlg').show()"/>
+<p:commandButton value="Delete" type="button" onclick="PF('deleteDlg').show()"/>
+</div>
 
+<p:dialog header="Add Server" widgetVar="addDlg">
 
+<p:panelGrid columns="2" cellpadding="1">
 
+<p:outputLabel value="Address:"/>
+<p:inputText value="#{settingController.address}"></p:inputText>
+<p:outputLabel value="Port:"/>
+<p:inputText value="#{settingController.port}">
+<f:convertNumber integerOnly="true"/>
+</p:inputText>
+</p:panelGrid>
+
+<p:commandButton value="Add" oncomplete="PF('addDlg').hide()"></p:commandButton>
+<p:commandButton value="Cancel" onclick="PF('addDlg').hide()"></p:commandButton>
+
+</p:dialog>
+</h:form>
+<p:dataTable value="#{adminEJB.serverList}" var="server">
+
+<p:column headerText="Address" width="300">
+<h:outputText value="${'http://'+server.address+':'+server.port}" />
+</p:column>
+
+<p:column headerText="Status" width="100">
+<h:outputText value="#{server.status}" />
+</p:column>
+</p:dataTable>
 </ui:define>
 
 </ui:composition>
