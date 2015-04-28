@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<job id="ServerRefresh" xmlns="http://xmlns.jcp.org/xml/ns/javaee" version="1.0">
+    <step id="ServerRefreshStep" >
+        <chunk item-count="1">
+            <reader ref="ServerRefreshReader"/>
+            <processor ref="ServerRefreshProcessor"/>
+            <writer ref="ServerRefreshWriter"/>
+        </chunk>    
+    </step>
+</job> 

@@ -31,7 +31,7 @@
 </p:inputText>
 </p:panelGrid>
 
-<p:commandButton value="Add" oncomplete="PF('addDlg').hide()"></p:commandButton>
+<p:commandButton value="Add" action="#{settingController.addServer}" oncomplete="PF('addDlg').hide()"></p:commandButton>
 <p:commandButton value="Cancel" onclick="PF('addDlg').hide()"></p:commandButton>
 
 </p:dialog>
