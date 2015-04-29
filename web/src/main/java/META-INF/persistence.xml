@@ -5,6 +5,7 @@
 		<jta-data-source>java:jboss/datasource/htcweb</jta-data-source>
 		<class>com.lipei.htcweb.data.Admin</class>
 		<class>com.lipei.htcweb.data.CondorServer</class>
+		<class>com.lipei.htcweb.status.Master</class>
 		<properties>
 			<property name="javax.persistence.schema-generation.database.action" value="create"/>
 			<property name="javax.persistence.schema-generation.scripts.action" value="drop-and-create"/>

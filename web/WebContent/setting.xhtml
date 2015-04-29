@@ -39,7 +39,7 @@
 <p:dataTable value="#{adminEJB.serverList}" var="server">
 
 <p:column headerText="Address" width="300">
-<h:outputText value="${'http://'+server.address+':'+server.port}" />
+<h:outputText value="${'http://'.concat(server.address).concat(':').concat(server.port)}" />
 </p:column>
 
 <p:column headerText="Status" width="100">

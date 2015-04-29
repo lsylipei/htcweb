@@ -5,6 +5,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Transient;
 
+import org.apache.commons.lang3.StringUtils;
+
 @Entity
 public class CondorServer {
 	@Id
@@ -49,4 +51,17 @@ public class CondorServer {
 		this.status = status;
 	}
 
+	@Override
+	public boolean equals(Object arg0) {
+		if (arg0 == this) {
+			return true;
+		}
+		if (arg0 instanceof CondorServer) {
+			CondorServer other = (CondorServer) arg0;
+
+			return StringUtils.equals(id, other.id) && StringUtils.equals(address, other.address) && port == other.port;
+
+		}
+		return false;
+	}
 }

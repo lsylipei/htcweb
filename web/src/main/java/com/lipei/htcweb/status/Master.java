@@ -1,5 +1,23 @@
 package com.lipei.htcweb.status;
+
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+
+import com.lipei.htcweb.data.CondorServer;
+
+@Entity
 public class Master {
+	@Id
+	public int id;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	public CondorServer server;
+
+	public long index;
+
+	// generate
 	public int mASTER_Timestamp;
 	public String authenticatedIdentity;
 	public int updatesSequenced;
