@@ -11,6 +11,8 @@
 			<property name="javax.persistence.schema-generation.scripts.action" value="drop-and-create"/>
 			<property name="javax.persistence.schema-generation.scripts.create-target" value="htcdbcreate.ddl"/>
 			<property name="javax.persistence.schema-generation.scripts.drop-target" value="htcdbdrop.ddl"/>
+			<property name="eclipselink.logging.level.sql" value="FINE"/>
+ 			<property name="eclipselink.logging.parameters" value="true"/>
 		</properties>
 	</persistence-unit>
 </persistence>
