@@ -29,13 +29,18 @@ public class ServerRefreshWriter extends AbstractItemWriter {
 	public void writeItems(List<Object> items) throws Exception {
 		for (Object object : items) {
 			if (object instanceof List) {
-				List<Master> list = (List<Master>) object;
+				List<Object> list = (List<Object>) object;
 
-				for (Master master : list) {
-					em.persist(master);
+				for (Object obj : list) {
+					em.persist(obj);
+					if (obj instanceof Master) {
+						Master master = (Master) obj;
+						em.merge(master.getServer());
+					}
 				}
 			}
 		}
+
 	}
 
 }

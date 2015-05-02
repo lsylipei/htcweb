@@ -1,6 +1,9 @@
 package com.lipei.htcweb.server;
 
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.xml.namespace.QName;
@@ -11,6 +14,8 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.lipei.htcweb.data.CondorServer;
 import com.lipei.htcweb.status.Master;
+import com.lipei.htcweb.status.Schedd;
+import com.lipei.htcweb.status.Startd;
 
 import condor.ClassAdStruct;
 import condor.ClassAdStructArray;
@@ -32,6 +37,10 @@ public class ServerDelegate {
 		this.serverdata = serverdata;
 	}
 
+	public CondorServer getServerdata() {
+		return serverdata;
+	}
+
 	public void init() throws Exception {
 
 		String base = "http://" + serverdata.getAddress() + ":" + serverdata.getPort() + "/";
@@ -46,13 +55,14 @@ public class ServerDelegate {
 
 	}
 
-	public Master requestStatus() throws Exception {
+	public Master requestMaster() throws Exception {
 
 		ClassAdStructArray ads = colport.queryMasterAds(null);
 
 		Master obj = new Master();
-		// obj.setServer(serverdata);
-		// dumpads(ads, obj);
+		obj.setServer(serverdata);
+		obj.setSerid(new Date().getTime());
+		dumpads(ads, obj);
 
 		return obj;
 	}
@@ -61,16 +71,47 @@ public class ServerDelegate {
 
 		List<ClassAdStruct> list = ads.getItem();
 		for (ClassAdStruct cads : list) {
-			List<ClassAdStructAttr> items = cads.getItem();
-			for (ClassAdStructAttr atr : items) {
-				String uncapitalize = StringUtils.uncapitalize(atr.getName());
-				String value = atr.getValue();
+			dumpcads(obj, cads);
+		}
+	}
 
-				System.out.println(uncapitalize);
-				System.out.println(value);
-				System.out.println();
+	private void dumpcads(Object obj, ClassAdStruct cads) throws IllegalAccessException, InvocationTargetException {
+		List<ClassAdStructAttr> items = cads.getItem();
+		for (ClassAdStructAttr atr : items) {
+			String uncapitalize = StringUtils.uncapitalize(atr.getName());
+			String value = atr.getValue();
+			try {
 				BeanUtils.setProperty(obj, uncapitalize, value);
+			} catch (IllegalAccessException | InvocationTargetException e) {
+				continue;
 			}
 		}
+	}
+
+	public List requestStatus() throws Exception {
+		long time = new Date().getTime();
+		ClassAdStructArray ads = colport.queryStartdAds(null);
+
+		List<ClassAdStruct> items = ads.getItem();
+		List<Object> list = new ArrayList<Object>();
+		for (ClassAdStruct cads : items) {
+			Startd startd = new Startd();
+			startd.setSerid(time);
+			dumpcads(startd, cads);
+			list.add(startd);
+
+			System.out.println("slot:" + startd.getSlotID() + " load:" + startd.getLoadAvg() + " condor:"
+					+ startd.getCondorLoadAvg());
+		}
+
+		Schedd schedd = new Schedd();
+
+		ads = colport.queryScheddAds(null);
+		dumpads(ads, schedd);
+
+		schedd.setSerid(time);
+		list.add(schedd);
+
+		return list;
 	}
 }

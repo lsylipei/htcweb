@@ -19,15 +19,21 @@ public class ServerRefreshReader extends AbstractItemReader {
 	@Inject
 	ServerEJB serverejb;
 
+	private boolean firsttime = true;
+
 	public ServerRefreshReader() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public Object readItem() throws Exception {
+		if (firsttime) {
+			firsttime = false;
+			return serverejb.getServerList();
+		} else {
+			return null;
+		}
 
-		return serverejb.getServerList();
 	}
 
 }
