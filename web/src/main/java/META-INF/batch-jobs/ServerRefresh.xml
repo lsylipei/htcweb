@@ -5,6 +5,7 @@
             <reader ref="ServerRefreshReader"/>
             <processor ref="ServerRefreshProcessor"/>
             <writer ref="ServerRefreshWriter"/>
-        </chunk>    
+        </chunk> 
+        <stop on="COMPLETED"/>  
     </step>
 </job> 

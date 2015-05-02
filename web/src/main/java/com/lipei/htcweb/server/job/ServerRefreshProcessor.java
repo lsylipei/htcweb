@@ -22,13 +22,16 @@ public class ServerRefreshProcessor implements ItemProcessor {
 	@Override
 	public Object processItem(Object item) throws Exception {
 
-		ArrayList<Master> result = new ArrayList<Master>();
+		ArrayList<Object> result = new ArrayList<Object>();
 		if (item instanceof List) {
 			List<ServerDelegate> list = (List<ServerDelegate>) item;
 
 			for (ServerDelegate server : list) {
-				Master master = server.requestStatus();
+
+				Master master = server.requestMaster();
 				result.add(master);
+				result.addAll(server.requestStatus());
+
 			}
 		}
 

@@ -56,8 +56,9 @@ public class ServerEJB {
 		return delegate;
 	}
 
-	@Schedule(hour = "*", minute = "*", second = "*/50", persistent = false)
+	@Schedule(hour = "*", minute = "*", second = "*/5", persistent = false)
 	public void startUpdateJob() {
+
 		JobOperator op = BatchRuntime.getJobOperator();
 
 		logger.severe("update job id:" + op.start("ServerRefresh", new Properties()));
