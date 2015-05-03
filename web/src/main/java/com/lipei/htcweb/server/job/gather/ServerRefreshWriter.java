@@ -1,4 +1,4 @@
-package com.lipei.htcweb.server.job;
+package com.lipei.htcweb.server.job.gather;
 
 import java.util.List;
 

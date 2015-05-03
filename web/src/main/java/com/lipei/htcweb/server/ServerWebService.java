@@ -1,6 +1,7 @@
 package com.lipei.htcweb.server;
 
 import java.lang.reflect.InvocationTargetException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
@@ -12,7 +13,6 @@ import javax.xml.ws.Service;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import com.lipei.htcweb.data.CondorServer;
 import com.lipei.htcweb.status.Master;
 import com.lipei.htcweb.status.Schedd;
 import com.lipei.htcweb.status.Startd;
@@ -23,35 +23,31 @@ import condor.ClassAdStructAttr;
 import condor.CondorCollectorPortType;
 import condor.CondorScheddPortType;
 
-public class ServerDelegate {
+public class ServerWebService extends AbstractServer {
 
 	static QName colname = new QName("urn:condor", "condorCollector");
 	static QName schname = new QName("urn:condor", "condorSchedd");
 
-	private CondorServer serverdata;
 	private CondorCollectorPortType colport;
 	private CondorScheddPortType schport;
 
-	public ServerDelegate(CondorServer serverdata) {
-		super();
-		this.serverdata = serverdata;
-	}
+	public void init() {
 
-	public CondorServer getServerdata() {
-		return serverdata;
-	}
+		URL colurl;
+		try {
+			String base = "http://" + condorServer.getAddress() + ":" + condorServer.getPort() + "/";
+			colurl = new URL(base + "condorCollector.wsdl");
 
-	public void init() throws Exception {
+			URL schurl = new URL(base + "condorSchedd.wsdl");
 
-		String base = "http://" + serverdata.getAddress() + ":" + serverdata.getPort() + "/";
-		URL colurl = new URL(base + "condorCollector.wsdl");
-		URL schurl = new URL(base + "condorSchedd.wsdl");
+			Service service = Service.create(colurl, colname);
+			colport = service.getPort(CondorCollectorPortType.class);
 
-		Service service = Service.create(colurl, colname);
-		colport = service.getPort(CondorCollectorPortType.class);
-
-		service = Service.create(schurl, schname);
-		schport = service.getPort(CondorScheddPortType.class);
+			service = Service.create(schurl, schname);
+			schport = service.getPort(CondorScheddPortType.class);
+		} catch (MalformedURLException e) {
+			throw new RuntimeException("error in create webservice", e);
+		}
 
 	}
 
@@ -60,7 +56,7 @@ public class ServerDelegate {
 		ClassAdStructArray ads = colport.queryMasterAds(null);
 
 		Master obj = new Master();
-		obj.setServer(serverdata);
+		obj.setServer(condorServer);
 		obj.setSerid(new Date().getTime());
 		dumpads(ads, obj);
 

@@ -12,6 +12,7 @@ import javax.batch.runtime.BatchRuntime;
 import javax.ejb.Schedule;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
+import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
@@ -27,7 +28,7 @@ public class ServerEJB {
 
 	private final static Logger logger = Logger.getLogger(ServerEJB.class.getName());
 
-	private List<ServerDelegate> serverlist = Collections.synchronizedList(new ArrayList<ServerDelegate>());
+	private List<Server> serverlist = Collections.synchronizedList(new ArrayList<Server>());
 
 	@PersistenceContext
 	private EntityManager em;
@@ -37,7 +38,6 @@ public class ServerEJB {
 
 	public ServerEJB() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	@PostConstruct
@@ -50,25 +50,32 @@ public class ServerEJB {
 
 	}
 
-	private ServerDelegate createServer(CondorServer condorServer) throws Exception {
-		ServerDelegate delegate = new ServerDelegate(condorServer);
-		delegate.init();
-		return delegate;
+	private Server createServer(CondorServer condorServer) throws Exception {
+
+		Server server = CDI.current().select(Server.class).get();
+		server.setCondorServer(condorServer);
+		server.init();
+		return server;
 	}
 
-	@Schedule(hour = "*", minute = "*", second = "*/5", persistent = false)
-	public void startUpdateJob() {
+	// @Schedule(hour = "*", minute = "*", second = "*/5", persistent = false)
+	public void dataGetherJob() {
 
 		JobOperator op = BatchRuntime.getJobOperator();
 
 		logger.severe("update job id:" + op.start("ServerRefresh", new Properties()));
 	}
 
+	@Schedule(hour = "*", minute = "*", second = "*/5", persistent = false)
+	public void dataArrangeJob() {
+
+	}
+
 	public void add(CondorServer server) throws Exception {
 		serverlist.add(createServer(server));
 	}
 
-	public List<ServerDelegate> getServerList() {
-		return new ArrayList<ServerDelegate>(serverlist);
+	public List<Server> getServerList() {
+		return new ArrayList<Server>(serverlist);
 	}
 }

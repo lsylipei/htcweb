@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/faces/dashboardTemplete.xhtml">
+
+
+<ui:define name="title">System Montior</ui:define>
+
+<ui:define name="content">
+
+<ui:repeat var="server" value="#{serverEJB.serverList}" varStatus="servstatus">
+
+<ui:param name="data" value="#{server.data}"/>
+
+<p:panel header="#{data.displayName}" toggleable="true" toggleSpeed="500">
+<h:form>
+
+<p:chart id="gauge" type="metergauge" model="#{data.cpuGauge}" style="width:400px;height:250px" />
+<p:poll interval="2" listener="#{data.update}" update="gauge"/>
+
+<h:outputLabel value="#{data.displayName}" />
+</h:form>
+</p:panel>
+
+
+</ui:repeat>
+
+
+</ui:define>
+
+</ui:composition>
+
+</html>
