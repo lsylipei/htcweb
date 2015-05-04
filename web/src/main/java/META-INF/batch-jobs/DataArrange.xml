@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<job id="DataArrange" xmlns="http://xmlns.jcp.org/xml/ns/javaee" version="1.0">
+    <step id="DataArrangeStep" >
+        <chunk item-count="1">
+            <reader ref="DataArrangehReader"/>
+            <processor ref="DataArrangeProcessor"/>
+            <writer ref="DataArrangeWriter"/>
+        </chunk> 
+        <stop on="COMPLETED"/>  
+    </step>
+</job> 

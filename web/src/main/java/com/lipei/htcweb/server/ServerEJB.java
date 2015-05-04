@@ -58,17 +58,20 @@ public class ServerEJB {
 		return server;
 	}
 
-	// @Schedule(hour = "*", minute = "*", second = "*/5", persistent = false)
+	@Schedule(hour = "*", minute = "*", second = "*/5", persistent = false)
 	public void dataGetherJob() {
 
 		JobOperator op = BatchRuntime.getJobOperator();
 
-		logger.severe("update job id:" + op.start("ServerRefresh", new Properties()));
+		logger.severe("gather job id:" + op.start("DataGather", new Properties()));
 	}
 
-	@Schedule(hour = "*", minute = "*", second = "*/5", persistent = false)
+	// @Schedule(hour = "*", minute = "*", second = "*/5", persistent = false)
 	public void dataArrangeJob() {
 
+		JobOperator op = BatchRuntime.getJobOperator();
+
+		logger.severe("arrange job id:" + op.start("DataArrange", new Properties()));
 	}
 
 	public void add(CondorServer server) throws Exception {
