@@ -33,12 +33,12 @@ public class ServerWebService extends AbstractServer {
 
 	public void init() {
 
-		URL colurl;
 		try {
-			String base = "http://" + condorServer.getAddress() + ":" + condorServer.getPort() + "/";
-			colurl = new URL(base + "condorCollector.wsdl");
+			URL colurl = new URL("http://" + condorServer.getAddress() + ":" + condorServer.getColPort() + "/"
+					+ "condorCollector.wsdl");
 
-			URL schurl = new URL(base + "condorSchedd.wsdl");
+			URL schurl = new URL("http://" + condorServer.getAddress() + ":" + condorServer.getSchPort() + "/"
+					+ "condorSchedd.wsdl");
 
 			Service service = Service.create(colurl, colname);
 			colport = service.getPort(CondorCollectorPortType.class);
@@ -49,6 +49,10 @@ public class ServerWebService extends AbstractServer {
 			throw new RuntimeException("error in create webservice", e);
 		}
 
+	}
+
+	public void requestJobList() {
+		schport.getJobAds(null, null);
 	}
 
 	public Master requestMaster() throws Exception {

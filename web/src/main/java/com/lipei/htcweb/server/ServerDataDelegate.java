@@ -69,7 +69,7 @@ public class ServerDataDelegate extends AbstractServer {
 
 		buf.append(condorServer.getAddress());
 		buf.append(":");
-		buf.append(condorServer.getPort());
+		buf.append(condorServer.getColPort());
 
 		buf.append(")");
 		return buf.toString();

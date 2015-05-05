@@ -13,7 +13,9 @@ import com.lipei.htcweb.data.CondorServer;
 @RequestScoped
 public class SettingController {
 	private String address;
-	private int port;
+	private int colPort;
+
+	private int schPort;
 
 	@Inject
 	AdminEJB admin;
@@ -26,17 +28,25 @@ public class SettingController {
 		this.address = address;
 	}
 
-	public int getPort() {
-		return port;
+	public int getColPort() {
+		return colPort;
 	}
 
-	public void setPort(int port) {
-		this.port = port;
+	public void setColPort(int port) {
+		this.colPort = port;
 	}
 
 	public void addServer() throws Exception {
-		CondorServer server = admin.addServer(address, port);
+		CondorServer server = admin.addServer(address, colPort, schPort);
 		ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
 		ec.redirect(((HttpServletRequest) ec.getRequest()).getRequestURI());
+	}
+
+	public int getSchPort() {
+		return schPort;
+	}
+
+	public void setSchPort(int schPort) {
+		this.schPort = schPort;
 	}
 }

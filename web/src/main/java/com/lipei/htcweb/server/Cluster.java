@@ -92,4 +92,8 @@ public class Cluster {
 		return refStartd;
 	}
 
+	public int getUsednum() {
+		return usednum;
+	}
+
 }

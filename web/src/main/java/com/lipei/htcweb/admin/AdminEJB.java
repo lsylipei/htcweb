@@ -54,13 +54,13 @@ public class AdminEJB {
 	}
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	public CondorServer addServer(String address, int port) throws Exception {
+	public CondorServer addServer(String address, int port, int schPort) throws Exception {
 
 		List<CondorServer> list = getServerList();
 		CondorServer server = new CondorServer();
 		server.setAddress(address);
-		server.setPort(port);
-
+		server.setColPort(port);
+		server.setSchPort(schPort);
 		if (list.contains(server)) {
 			return null;
 		}

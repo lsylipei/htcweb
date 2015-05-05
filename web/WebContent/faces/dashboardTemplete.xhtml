@@ -18,14 +18,24 @@
 
 <p:layout fullPage="true">
 
-<p:layoutUnit position="west" resizable="false" size="150" minSize="40">
-<h:panelGrid columns="1">
-<h:link outcome="monitor.xhtml" value="System Status"/>
-<h:link outcome="dashboard.xhtml" value="Main"/>
-<h:link outcome="dashboard.xhtml" value="Main"/>
-<h:link outcome="dashboard.xhtml" value="Main"/>
-<h:link outcome="setting.xhtml" value="Setting"/>
-</h:panelGrid>
+<p:layoutUnit position="west" resizable="false" size="250" minSize="40">
+
+<p:menu>
+
+<p:submenu label="System">
+<p:menuitem value="Runtime Status" outcome="monitor.xhtml"></p:menuitem>
+</p:submenu>
+<p:submenu label="Job Management">
+<p:menuitem value="Runtime Status" outcome="jobs.xhtml"></p:menuitem>
+</p:submenu>
+<p:submenu label="Setting">
+<p:menuitem value="Admin" outcome="monitor.xhtml"></p:menuitem>
+<p:menuitem value="Server" outcome="setting.xhtml"></p:menuitem>
+</p:submenu>
+
+
+</p:menu>
+
 </p:layoutUnit>
 
 <p:layoutUnit position="center">

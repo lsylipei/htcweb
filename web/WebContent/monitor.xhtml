@@ -26,10 +26,49 @@
 
 <p:fieldset legend="#{cluster.refStartd.machine}" toggleable="true">
 <h:form>
+
+<h:panelGrid columns="2">
+
+<ui:param name="refStartd" value="#{cluster.refStartd}"/>
+
+<h:panelGroup>
 <p:chart id="guage" type="metergauge" model="#{cluster.cpuGauge}" style="width:400px;height:250px" />
-<p:poll interval="5" listener="#{data.update}" update="guage"></p:poll>
+</h:panelGroup>
+
+
+<h:panelGroup>
+
+<h:panelGrid columns="2">
+<h:outputLabel value="Arch:" />
+<h:outputLabel value="#{refStartd.arch}" />
+<h:outputLabel value="Machine:" />
+<h:outputLabel value="#{refStartd.machine}" />
+<h:outputLabel value="OS:" />
+<h:outputLabel value="#{refStartd.opSysLongName}" />
+<h:outputLabel value="CPU core:" />
+<h:outputLabel value="#{refStartd.totalCpus}" >
+<f:convertNumber pattern="#0"/>
+</h:outputLabel>
+<h:outputLabel value="Memory:" />
+<h:outputLabel value="#{refStartd.totalMemory/1024}" >
+<f:convertNumber pattern="#0GB"/>
+</h:outputLabel>
+<h:outputLabel value="Total slots:" />
+<h:outputLabel value="#{refStartd.totalSlots}" />
+<h:outputLabel value="Working slots:" />
+<h:outputLabel id="workingslot" value="#{cluster.usednum}" />
+<p:poll interval="5" listener="#{data.update}" update="guage,workingslot"/>
+
+</h:panelGrid>
+</h:panelGroup>
+
+</h:panelGrid>
+
 </h:form>
 </p:fieldset>
+
+
+
 </ui:repeat>
 
 </p:panel>

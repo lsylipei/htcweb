@@ -14,7 +14,8 @@ public class CondorServer {
 	private String id;
 
 	private String address;
-	private int port;
+	private int colPort;
+	private int schPort;
 
 	@Transient
 	private CondorServerStatus status;
@@ -35,12 +36,12 @@ public class CondorServer {
 		this.address = address;
 	}
 
-	public int getPort() {
-		return port;
+	public int getColPort() {
+		return colPort;
 	}
 
-	public void setPort(int port) {
-		this.port = port;
+	public void setColPort(int port) {
+		this.colPort = port;
 	}
 
 	public CondorServerStatus getStatus() {
@@ -59,9 +60,18 @@ public class CondorServer {
 		if (arg0 instanceof CondorServer) {
 			CondorServer other = (CondorServer) arg0;
 
-			return StringUtils.equals(id, other.id) && StringUtils.equals(address, other.address) && port == other.port;
+			return StringUtils.equals(id, other.id) && StringUtils.equals(address, other.address)
+					&& colPort == other.colPort && schPort == other.schPort;
 
 		}
 		return false;
+	}
+
+	public int getSchPort() {
+		return schPort;
+	}
+
+	public void setSchPort(int schPort) {
+		this.schPort = schPort;
 	}
 }

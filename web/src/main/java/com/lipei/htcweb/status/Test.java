@@ -20,26 +20,24 @@ import org.apache.commons.lang3.StringUtils;
 
 import condor.ClassAdStruct;
 import condor.ClassAdStructArray;
+import condor.ClassAdStructArrayAndStatus;
 import condor.ClassAdStructAttr;
-import condor.CondorCollectorPortType;
+import condor.CondorScheddPortType;
 
 public class Test {
 
 	public static void main(String[] args) throws MalformedURLException {
-		URL url = new URL("http://localhost:9618/condorCollector.wsdl");
+		URL url = new URL("http://localhost:18493/condorSchedd.wsdl");
 
-		QName name = new QName("urn:condor", "condorCollector");
+		QName name = new QName("urn:condor", "condorSchedd");
 
 		Service service = Service.create(url, name);
-		CondorCollectorPortType shedd = service.getPort(CondorCollectorPortType.class);
+		CondorScheddPortType shedd = service.getPort(CondorScheddPortType.class);
 
-		System.out.println(shedd.toString());
-		System.out.println(shedd.getPlatformString());
-		System.out.println(shedd.getVersionString());
+		// ClassAdStructArrayAndStatus ads = shedd.getJobAds(null, null);
+		ClassAdStructArrayAndStatus ads = shedd.getJobAds(null, null);
 
-		ClassAdStructArray ads = shedd.querySubmittorAds(null);
-
-		adsdump(ads);
+		adsdump(ads.getClassAdArray().getValue());
 
 	}
 
