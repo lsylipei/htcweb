@@ -94,6 +94,7 @@ public class ServerWebService extends AbstractServer {
 			Startd startd = new Startd();
 			startd.setSerid(time);
 			dumpcads(startd, cads);
+			startd.setServer(condorServer);
 			list.add(startd);
 
 			System.out.println("slot:" + startd.getSlotID() + " load:" + startd.getLoadAvg() + " condor:"
@@ -106,6 +107,7 @@ public class ServerWebService extends AbstractServer {
 		dumpads(ads, schedd);
 
 		schedd.setSerid(time);
+		schedd.setServer(condorServer);
 		list.add(schedd);
 
 		return list;

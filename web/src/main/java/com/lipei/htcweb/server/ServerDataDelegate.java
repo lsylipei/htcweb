@@ -1,7 +1,9 @@
 package com.lipei.htcweb.server;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.enterprise.context.Dependent;
 import javax.persistence.EntityManager;
@@ -10,8 +12,6 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-
-import org.primefaces.model.chart.MeterGaugeChartModel;
 
 import com.lipei.htcweb.status.AbstractClassAdsInfo_;
 import com.lipei.htcweb.status.Master;
@@ -24,35 +24,14 @@ public class ServerDataDelegate extends AbstractServer {
 
 	private Master master;
 
-	private MeterGaugeChartModel cpuGauge;
+	private HashMap<String, Cluster> clusterMap;
 
 	public void init() {
-
 		queryMaster();
-		createCPUGauge();
 	}
 
 	public void update() {
 
-	}
-
-	private void createCPUGauge() {
-		ArrayList<Number> intervals = new ArrayList<Number>();
-		intervals.add(0);
-		intervals.add(20);
-		intervals.add(40);
-		intervals.add(60);
-		intervals.add(80);
-		intervals.add(100);
-		cpuGauge = new MeterGaugeChartModel(100, intervals);
-
-		cpuGauge.setTitle("CPU utilize");
-		cpuGauge.setGaugeLabel("%");
-		cpuGauge.setValue(0);
-	}
-
-	public MeterGaugeChartModel getCpuGauge() {
-		return cpuGauge;
 	}
 
 	private void queryMaster() {
@@ -94,5 +73,16 @@ public class ServerDataDelegate extends AbstractServer {
 
 		buf.append(")");
 		return buf.toString();
+	}
+
+	public Map<String, Cluster> getClusterMap() {
+		if (clusterMap == null) {
+			clusterMap = new HashMap<String, Cluster>();
+		}
+		return clusterMap;
+	}
+
+	public List<Cluster> getClusters() {
+		return new ArrayList<Cluster>(clusterMap.values());
 	}
 }

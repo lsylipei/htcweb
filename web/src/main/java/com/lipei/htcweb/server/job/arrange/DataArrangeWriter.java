@@ -10,8 +10,6 @@ import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import com.lipei.htcweb.status.Master;
-
 @Named("DataArrangeWriter")
 @Dependent
 public class DataArrangeWriter extends AbstractItemWriter {
@@ -27,19 +25,6 @@ public class DataArrangeWriter extends AbstractItemWriter {
 	@Override
 	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
 	public void writeItems(List<Object> items) throws Exception {
-		for (Object object : items) {
-			if (object instanceof List) {
-				List<Object> list = (List<Object>) object;
-
-				for (Object obj : list) {
-					em.persist(obj);
-					if (obj instanceof Master) {
-						Master master = (Master) obj;
-						em.merge(master.getServer());
-					}
-				}
-			}
-		}
 
 	}
 

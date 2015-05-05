@@ -19,13 +19,19 @@
 <ui:param name="data" value="#{server.data}"/>
 
 <p:panel header="#{data.displayName}" toggleable="true" toggleSpeed="500">
+
+
+
+<ui:repeat var="cluster" value="#{data.clusters}" varStatus="clusterstatus">
+
+<p:fieldset legend="#{cluster.refStartd.machine}" toggleable="true">
 <h:form>
-
-<p:chart id="gauge" type="metergauge" model="#{data.cpuGauge}" style="width:400px;height:250px" />
-<p:poll interval="2" listener="#{data.update}" update="gauge"/>
-
-<h:outputLabel value="#{data.displayName}" />
+<p:chart id="guage" type="metergauge" model="#{cluster.cpuGauge}" style="width:400px;height:250px" />
+<p:poll interval="5" listener="#{data.update}" update="guage"></p:poll>
 </h:form>
+</p:fieldset>
+</ui:repeat>
+
 </p:panel>
 
 

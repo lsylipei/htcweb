@@ -66,7 +66,7 @@ public class ServerEJB {
 		logger.severe("gather job id:" + op.start("DataGather", new Properties()));
 	}
 
-	// @Schedule(hour = "*", minute = "*", second = "*/5", persistent = false)
+	@Schedule(hour = "*", minute = "*", second = "*/5", persistent = false)
 	public void dataArrangeJob() {
 
 		JobOperator op = BatchRuntime.getJobOperator();
