@@ -4,21 +4,24 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Collection;
 import java.util.List;
 
+import javax.xml.bind.JAXBElement;
 import javax.xml.namespace.QName;
 import javax.xml.ws.Service;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import com.lipei.htcweb.status.Job;
 import com.lipei.htcweb.status.Master;
 import com.lipei.htcweb.status.Schedd;
 import com.lipei.htcweb.status.Startd;
 
 import condor.ClassAdStruct;
 import condor.ClassAdStructArray;
+import condor.ClassAdStructArrayAndStatus;
 import condor.ClassAdStructAttr;
 import condor.CondorCollectorPortType;
 import condor.CondorScheddPortType;
@@ -51,17 +54,31 @@ public class ServerWebService extends AbstractServer {
 
 	}
 
-	public void requestJobList() {
-		schport.getJobAds(null, null);
+	public Collection<? extends Object> requestJobList(long time) throws Exception {
+		ClassAdStructArrayAndStatus ads = schport.getJobAds(null, null);
+
+		JAXBElement<ClassAdStructArray> array = ads.getClassAdArray();
+		ClassAdStructArray value = array.getValue();
+		List<ClassAdStruct> items = value.getItem();
+		ArrayList<Job> list = new ArrayList<Job>();
+		for (ClassAdStruct cads : items) {
+			Job job = new Job();
+			dumpcads(job, cads);
+			job.setServer(condorServer);
+			job.setSerid(time);
+			list.add(job);
+		}
+
+		return list;
 	}
 
-	public Master requestMaster() throws Exception {
+	public Master requestMaster(long time) throws Exception {
 
 		ClassAdStructArray ads = colport.queryMasterAds(null);
 
 		Master obj = new Master();
 		obj.setServer(condorServer);
-		obj.setSerid(new Date().getTime());
+		obj.setSerid(time);
 		dumpads(ads, obj);
 
 		return obj;
@@ -88,8 +105,7 @@ public class ServerWebService extends AbstractServer {
 		}
 	}
 
-	public List requestStatus() throws Exception {
-		long time = new Date().getTime();
+	public List requestStatus(long time) throws Exception {
 		ClassAdStructArray ads = colport.queryStartdAds(null);
 
 		List<ClassAdStruct> items = ads.getItem();

@@ -4,7 +4,7 @@ import javax.annotation.Generated;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="EclipseLink-2.6.0.v20150309-rNA", date="2015-05-05T16:32:26")
+@Generated(value="EclipseLink-2.6.0.v20150309-rNA", date="2015-05-06T21:26:03")
 @StaticMetamodel(Startd.class)
 public class Startd_ extends AbstractClassAdsInfo_ {
 

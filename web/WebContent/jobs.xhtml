@@ -15,7 +15,75 @@
 
 <ui:define name="content">
 
+<h:form id="jobform">
+<h:panelGroup>
+<p:outputLabel value="Job or cluster ID:"/>
+<p:inputText id="searchkey" value="#{jobConotroller.keyword}"/>
+<p:commandButton value="Search" update="jobtable" action="#{jobConotroller.search}"/>
+<p:commandButton value="Reset" update="jobtable,searchkey" actionListener="#{jobConotroller.refresh}"/>
+</h:panelGroup>
 
+<p:dialog header="Job Info" widgetVar="jobDialog" >
+
+<ui:param name="sjob" value="#{jobConotroller.selectJob}" />
+
+<p:outputPanel id="jobdetail" style="text-align:left;" rendered="#{not empty jobConotroller.selectJob}">
+
+<p:panelGrid columns="2" >
+
+<h:outputText value="Job ID:" />
+<h:outputText value="#{''.concat(sjob.clusterId).concat(':').concat(sjob.procId)}" />
+<h:outputText value="Owner:" />
+<h:outputText value="#{sjob.owner}" />
+<h:outputText value="Status:" />
+<h:outputText value="#{sjob.jobStatus}" converter="jobstatusConv"/>
+<h:outputText value="Universe:"/>
+<h:outputText value="#{sjob.jobUniverse}" converter="JobUniverseConvertor"/>
+<h:outputText value="Working Host:" />
+<h:outputText value="#{sjob.remoteHost}" />
+<h:outputText value="Server:" />
+<h:outputText value="#{sjob.server.address}" />
+<h:outputText value="CMD:" />
+<h:outputText value="#{sjob.cmd}" />
+<h:outputText value="Args:" />
+<h:outputText value="#{sjob.args}" />
+
+</p:panelGrid>
+
+</p:outputPanel>
+
+</p:dialog>
+
+<p:dataTable id="jobtable" var="job" value="#{jobConotroller.model}" paginator="true" rows="10" lazy="true" resizableColumns="true" paginatorPosition="bottom">
+<p:column headerText="ClusterID">
+<h:outputText value="#{job.clusterId}" />
+</p:column>
+<p:column headerText="ProcID">
+<h:outputText value="#{job.procId}" />
+</p:column>
+<p:column headerText="Owner">
+<h:outputText value="#{job.owner}" />
+</p:column>
+<p:column headerText="Working Host">
+<h:outputText value="#{job.remoteHost}" />
+</p:column>
+<p:column headerText="Universe">
+<h:outputText value="#{job.jobUniverse}" converter="JobUniverseConvertor"/>
+</p:column>
+<p:column headerText="Job Status">
+<h:outputText value="#{job.jobStatus}"  converter="jobstatusConv"/>
+</p:column>
+<p:column>
+	<p:commandButton update=":jobform:jobdetail" oncomplete="PF('jobDialog').show()" icon="ui-icon-search" title="View">
+		<f:setPropertyActionListener value="#{job}" target="#{jobConotroller.selectJob}"></f:setPropertyActionListener>
+	</p:commandButton>
+</p:column>
+
+
+
+</p:dataTable>
+
+</h:form>
 
 </ui:define>
 

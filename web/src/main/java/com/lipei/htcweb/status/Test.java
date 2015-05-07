@@ -19,8 +19,8 @@ import javax.xml.ws.Service;
 import org.apache.commons.lang3.StringUtils;
 
 import condor.ClassAdStruct;
+import condor.ClassAdStructAndStatus;
 import condor.ClassAdStructArray;
-import condor.ClassAdStructArrayAndStatus;
 import condor.ClassAdStructAttr;
 import condor.CondorScheddPortType;
 
@@ -35,9 +35,10 @@ public class Test {
 		CondorScheddPortType shedd = service.getPort(CondorScheddPortType.class);
 
 		// ClassAdStructArrayAndStatus ads = shedd.getJobAds(null, null);
-		ClassAdStructArrayAndStatus ads = shedd.getJobAds(null, null);
+		ClassAdStructAndStatus obj = shedd.getJobAd(null, 237, 0);
+		System.out.println(obj);
 
-		adsdump(ads.getClassAdArray().getValue());
+		// adsdump(ads.getClassAdArray().getValue());
 
 	}
 
