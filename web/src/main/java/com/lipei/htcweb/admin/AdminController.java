@@ -1,8 +1,10 @@
 package com.lipei.htcweb.admin;
 
 import javax.enterprise.context.RequestScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.servlet.http.HttpSession;
 
 @Named
 @RequestScoped
@@ -32,5 +34,11 @@ public class AdminController {
 
 	public String login() {
 		return adminejb.login(user, pass);
+	}
+
+	public String logout() {
+		HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+		session.invalidate();
+		return "index.xhtml";
 	}
 }

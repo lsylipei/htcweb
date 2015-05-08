@@ -18,8 +18,14 @@
 
 <p:layout fullPage="true">
 
-<p:layoutUnit position="west" resizable="false" size="250" minSize="40">
+<p:layoutUnit position="north" size="100">
 
+<h3>Web Interface For HtCondor system.</h3>
+
+</p:layoutUnit>
+
+<p:layoutUnit position="west" resizable="false" size="250" minSize="40">
+<h:form>
 <p:menu>
 
 <p:submenu label="System">
@@ -31,10 +37,14 @@
 <p:submenu label="Setting">
 <p:menuitem value="Admin" outcome="monitor.xhtml"></p:menuitem>
 <p:menuitem value="Server" outcome="setting.xhtml"></p:menuitem>
+
+<p:menuitem value="Logout" outcome="login.xhtml" action="#{adminController.logout()}"></p:menuitem>
+
 </p:submenu>
 
 
 </p:menu>
+</h:form>
 
 </p:layoutUnit>
 
