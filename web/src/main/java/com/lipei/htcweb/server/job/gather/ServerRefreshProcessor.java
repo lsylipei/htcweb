@@ -9,7 +9,6 @@ import javax.enterprise.context.Dependent;
 import javax.inject.Named;
 
 import com.lipei.htcweb.server.ServerWebService;
-import com.lipei.htcweb.status.Master;
 
 @Dependent
 @Named("ServerRefreshProcessor")
@@ -31,8 +30,7 @@ public class ServerRefreshProcessor implements ItemProcessor {
 
 			for (ServerWebService server : list) {
 
-				Master master = server.requestMaster(time);
-				result.add(master);
+				result.addAll(server.requestMaster(time));
 				result.addAll(server.requestStatus(time));
 
 				result.addAll(server.requestJobList(time));

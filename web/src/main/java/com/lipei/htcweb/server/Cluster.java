@@ -81,7 +81,7 @@ public class Cluster {
 		if (usednum == 0) {
 			cpuUsage = 0;
 		} else {
-			cpuUsage = (int) (100 * (sum / usednum) * (usednum / slotnum));
+			cpuUsage = (int) (100 * ((float) sum / usednum) * ((float) usednum / slotnum));
 		}
 
 		log.log(Level.SEVERE, refStartd.getMachine() + " cpuUsage is :" + cpuUsage);

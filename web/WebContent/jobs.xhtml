@@ -14,76 +14,105 @@
 <ui:define name="title">Job Management</ui:define>
 
 <ui:define name="content">
+	<f:event type="preRenderView" listener="#{jobConotroller.init}" />
 
-<h:form id="jobform">
-<h:panelGroup>
-<p:outputLabel value="Job or cluster ID:"/>
-<p:inputText id="searchkey" value="#{jobConotroller.keyword}"/>
-<p:commandButton value="Search" update="jobtable" action="#{jobConotroller.search}"/>
-<p:commandButton value="Reset" update="jobtable,searchkey" actionListener="#{jobConotroller.refresh}"/>
-</h:panelGroup>
+	<h:form id="jobform" enctype="multipart/form-data">
+		<p:growl id="growl" showDetail="true" sticky="true" />
+			
+			
 
-<p:dialog header="Job Info" widgetVar="jobDialog" >
-
-<ui:param name="sjob" value="#{jobConotroller.selectJob}" />
-
-<p:outputPanel id="jobdetail" style="text-align:left;" rendered="#{not empty jobConotroller.selectJob}">
-
-<p:panelGrid columns="2" >
-
-<h:outputText value="Job ID:" />
-<h:outputText value="#{''.concat(sjob.clusterId).concat(':').concat(sjob.procId)}" />
-<h:outputText value="Owner:" />
-<h:outputText value="#{sjob.owner}" />
-<h:outputText value="Status:" />
-<h:outputText value="#{sjob.jobStatus}" converter="jobstatusConv"/>
-<h:outputText value="Universe:"/>
-<h:outputText value="#{sjob.jobUniverse}" converter="JobUniverseConvertor"/>
-<h:outputText value="Working Host:" />
-<h:outputText value="#{sjob.remoteHost}" />
-<h:outputText value="Server:" />
-<h:outputText value="#{sjob.server.address}" />
-<h:outputText value="CMD:" />
-<h:outputText value="#{sjob.cmd}" />
-<h:outputText value="Args:" />
-<h:outputText value="#{sjob.args}" />
-
-</p:panelGrid>
-
-</p:outputPanel>
-
-</p:dialog>
-
-<p:dataTable id="jobtable" var="job" value="#{jobConotroller.model}" paginator="true" rows="10" lazy="true" resizableColumns="true" paginatorPosition="bottom">
-<p:column headerText="ClusterID">
-<h:outputText value="#{job.clusterId}" />
-</p:column>
-<p:column headerText="ProcID">
-<h:outputText value="#{job.procId}" />
-</p:column>
-<p:column headerText="Owner">
-<h:outputText value="#{job.owner}" />
-</p:column>
-<p:column headerText="Working Host">
-<h:outputText value="#{job.remoteHost}" />
-</p:column>
-<p:column headerText="Universe">
-<h:outputText value="#{job.jobUniverse}" converter="JobUniverseConvertor"/>
-</p:column>
-<p:column headerText="Job Status">
-<h:outputText value="#{job.jobStatus}"  converter="jobstatusConv"/>
-</p:column>
-<p:column>
-	<p:commandButton update=":jobform:jobdetail" oncomplete="PF('jobDialog').show()" icon="ui-icon-search" title="View">
-		<f:setPropertyActionListener value="#{job}" target="#{jobConotroller.selectJob}"></f:setPropertyActionListener>
-	</p:commandButton>
-</p:column>
-
-
-
-</p:dataTable>
-
-</h:form>
+		
+		<p:dialog header="Upload job" widgetVar="uploadDialog">
+			<p:outputLabel for="server" value="Server:" />
+			<p:selectOneListbox id="server" value="#{jobConotroller.selectid}" converter="ServerConverter" var="t" filter="false">
+				<f:selectItems value="#{jobConotroller.serverlist}" var="server" itemLabel="test" itemValue="#{server}"/>
+				
+				<p:column>
+					<p:outputLabel value="#{t.condorServer.address}" />
+				</p:column>
+			
+			</p:selectOneListbox>
+	
+			<p:fileUpload value="#{jobConotroller.file}" mode="simple" skinSimple="true"/>
+			<p:commandButton value="Submit" ajax="false" action="#{jobConotroller.upload}" update="growl"/>
+		</p:dialog>
+		
+		
+		<p:dialog header="Job Info" widgetVar="jobDialog">
+		
+			<ui:param name="sjob" value="#{jobConotroller.selectJob}" />
+			
+			<p:outputPanel id="jobdetail" style="text-align:left;">
+			
+			<p:panelGrid columns="2" rendered="#{not empty jobConotroller.selectJob}">
+			
+			<h:outputText value="Job ID:" />
+			<h:outputText value="#{''.concat(sjob.clusterId).concat(':').concat(sjob.procId)}" />
+			<h:outputText value="Owner:" />
+			<h:outputText value="#{sjob.owner}" />
+			<h:outputText value="Status:" />
+			<h:outputText value="#{sjob.jobStatus}" converter="jobstatusConv"/>
+			<h:outputText value="Universe:"/>
+			<h:outputText value="#{sjob.jobUniverse}" converter="JobUniverseConvertor"/>
+			<h:outputText value="Working Host:" />
+			<h:outputText value="#{sjob.remoteHost}" />
+			<h:outputText value="Server:" />
+			<h:outputText value="#{sjob.server.address}" />
+			<h:outputText value="CMD:" />
+			<h:outputText value="#{sjob.cmd}" />
+			<h:outputText value="Args:" />
+			<h:outputText value="#{sjob.args}" />
+			
+			</p:panelGrid>
+			
+			</p:outputPanel>
+		
+		</p:dialog>
+		
+		<p:toolbar>
+			<f:facet name="left">
+				<p:outputLabel value="Job or cluster ID:"/>
+				<p:inputText id="searchkey" value="#{jobConotroller.keyword}"/>
+				<p:commandButton value="Search" update="jobtable" action="#{jobConotroller.search}"/>
+				<p:commandButton value="Reset" update="jobtable,searchkey" actionListener="#{jobConotroller.refresh}"/>
+				
+			</f:facet>
+			
+			<f:facet name="right">
+				<p:commandButton value="Upload Job" onclick="PF('uploadDialog').show()"/>
+			</f:facet>
+		</p:toolbar>
+		<p:dataTable id="jobtable" var="job" value="#{jobConotroller.model}" paginator="true" rows="10" lazy="true" resizableColumns="true" >
+		
+		<p:column headerText="ClusterID">
+		<h:outputText value="#{job.clusterId}" />
+		</p:column>
+		<p:column headerText="ProcID">
+		<h:outputText value="#{job.procId}" />
+		</p:column>
+		<p:column headerText="Owner">
+		<h:outputText value="#{job.owner}" />
+		</p:column>
+		<p:column headerText="Working Host">
+		<h:outputText value="#{job.remoteHost}" />
+		</p:column>
+		<p:column headerText="Universe">
+		<h:outputText value="#{job.jobUniverse}" converter="JobUniverseConvertor"/>
+		</p:column>
+		<p:column headerText="Job Status">
+		<h:outputText value="#{job.jobStatus}"  converter="jobstatusConv"/>
+		</p:column>
+		<p:column>
+			<p:commandButton update=":jobform:jobdetail" oncomplete="PF('jobDialog').show()" icon="ui-icon-search" title="View">
+				<f:setPropertyActionListener value="#{job}" target="#{jobConotroller.selectJob}"></f:setPropertyActionListener>
+			</p:commandButton>
+		</p:column>
+		
+		
+		
+		</p:dataTable>
+	
+	</h:form>
 
 </ui:define>
 

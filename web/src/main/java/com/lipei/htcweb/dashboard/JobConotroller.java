@@ -6,7 +6,10 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -18,7 +21,10 @@ import javax.persistence.criteria.Root;
 import org.apache.commons.lang3.StringUtils;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
+import org.primefaces.model.UploadedFile;
 
+import com.lipei.htcweb.server.Server;
+import com.lipei.htcweb.server.ServerEJB;
 import com.lipei.htcweb.status.AbstractClassAdsInfo_;
 import com.lipei.htcweb.status.Job;
 import com.lipei.htcweb.status.Job_;
@@ -40,6 +46,11 @@ public class JobConotroller implements Serializable {
 	private String keyword;
 
 	private Job selectJob;
+
+	@Inject
+	private ServerEJB sevejb;
+
+	private List<Server> serverlist;
 
 	public JobConotroller() {
 		model = new LazyDataModel<Job>() {
@@ -92,7 +103,7 @@ public class JobConotroller implements Serializable {
 	@PostConstruct
 	public void init() {
 		setSum();
-
+		serverlist = sevejb.getServerList();
 	}
 
 	private void setSum() {
@@ -147,5 +158,51 @@ public class JobConotroller implements Serializable {
 	public void onRowSelect() {
 		String test = new String();
 		test.toString();
+	}
+
+	private UploadedFile file;
+
+	public UploadedFile getFile() {
+		return file;
+	}
+
+	public void setFile(UploadedFile file) {
+		this.file = file;
+	}
+
+	public void upload() {
+		if (selectid == null) {
+			FacesMessage message = new FacesMessage("Error", "Please select server is no valid");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			return;
+		}
+
+		if (file != null) {
+			String fileName = file.getFileName();
+
+			try {
+				selectid.getWebservice().upload(file);
+			} catch (Exception e) {
+				FacesMessage message = new FacesMessage("Error", fileName + " is no valid");
+				FacesContext.getCurrentInstance().addMessage(null, message);
+				e.printStackTrace();
+				return;
+			}
+
+		}
+	}
+
+	private Server selectid;
+
+	public Server getSelectid() {
+		return selectid;
+	}
+
+	public void setSelectid(Server selectid) {
+		this.selectid = selectid;
+	}
+
+	public List<Server> getServerlist() {
+		return serverlist;
 	}
 }

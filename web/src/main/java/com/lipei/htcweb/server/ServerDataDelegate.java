@@ -15,6 +15,7 @@ import javax.persistence.criteria.Root;
 
 import com.lipei.htcweb.status.AbstractClassAdsInfo_;
 import com.lipei.htcweb.status.Master;
+import com.lipei.htcweb.status.Master_;
 
 @Dependent
 public class ServerDataDelegate extends AbstractServer {
@@ -43,7 +44,9 @@ public class ServerDataDelegate extends AbstractServer {
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<Object> cq = cb.createQuery();
 		Root<Master> from = cq.from(Master.class);
-		cq.select(from).where(cb.equal(from.get(AbstractClassAdsInfo_.server), condorServer));
+
+		cq.select(from).where(cb.equal(from.get(AbstractClassAdsInfo_.server), condorServer),
+				cb.like(from.get(Master_.myAddress), "<" + condorServer.getAddress() + ":%"));
 		cq.orderBy(cb.desc(from.get(AbstractClassAdsInfo_.serid)));
 
 		TypedQuery<Object> query = em.createQuery(cq);
