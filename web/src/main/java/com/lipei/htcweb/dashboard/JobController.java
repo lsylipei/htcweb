@@ -21,6 +21,7 @@ import javax.persistence.criteria.Root;
 import org.apache.commons.lang3.StringUtils;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
+import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
 
 import com.lipei.htcweb.server.Server;
@@ -31,7 +32,7 @@ import com.lipei.htcweb.status.Job_;
 
 @Named
 @SessionScoped
-public class JobConotroller implements Serializable {
+public class JobController implements Serializable {
 
 	/**
 	 * 
@@ -52,7 +53,24 @@ public class JobConotroller implements Serializable {
 
 	private List<Server> serverlist;
 
-	public JobConotroller() {
+	public StreamedContent getDownload() {
+
+		if (selectJob == null) {
+			return null;
+		}
+
+		Server jobserver = null;
+		for (Server server : serverlist) {
+			if (server.getCondorServer().equals(selectJob.getServer())) {
+				jobserver = server;
+				break;
+			}
+		}
+
+		return jobserver.getWebservice().download(selectJob);
+	}
+
+	public JobController() {
 		model = new LazyDataModel<Job>() {
 
 			/**

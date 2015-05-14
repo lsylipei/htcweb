@@ -1,5 +1,6 @@
 package com.lipei.htcweb.server;
 
+import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -17,6 +18,8 @@ import javax.xml.ws.Service;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
 
 import com.lipei.htcweb.status.Job;
@@ -24,6 +27,7 @@ import com.lipei.htcweb.status.Master;
 import com.lipei.htcweb.status.Schedd;
 import com.lipei.htcweb.status.Startd;
 
+import condor.Base64DataAndStatus;
 import condor.ClassAdAttrType;
 import condor.ClassAdStruct;
 import condor.ClassAdStructArray;
@@ -253,5 +257,15 @@ public class ServerWebService extends AbstractServer {
 //		e.setType(ClassAdAttrType.STRING_ATTR);
 //		e.setValue("lipei@lipei-PC");
 //		items.add(e);
+	}
+
+	public StreamedContent download(Job selectJob) {
+		TransactionAndStatus trans = schport.beginTransaction(6000);
+		Base64DataAndStatus result = schport.getFile(trans.getTransaction(), selectJob.getClusterId(),
+				selectJob.getProcId(), "name.pptx", 0, 1072831);
+
+		schport.abortTransaction(trans.getTransaction());
+		return new DefaultStreamedContent(new ByteArrayInputStream(result.getData().getValue()),
+				"application/vnd.openxmlformats-officedocument.presentationml.presentation", "name.pptx");
 	}
 }

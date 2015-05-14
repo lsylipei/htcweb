@@ -21,6 +21,7 @@ import javax.xml.ws.Service;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import condor.Base64DataAndStatus;
 import condor.ClassAdAttrType;
 import condor.ClassAdStruct;
 import condor.ClassAdStructArray;
@@ -43,7 +44,18 @@ public class Test {
 
 		// adsdump(ads.getClassAdArray().getValue());
 
-		upload(shedd);
+		// upload(shedd);
+		download(shedd, 152, 2);
+	}
+
+	private static void download(CondorScheddPortType schport, int clusterid, int jobid) {
+
+		TransactionAndStatus tra = schport.beginTransaction(6000);
+		Transaction trans = tra.getTransaction();
+
+		Base64DataAndStatus result = schport.getFile(trans, clusterid, jobid, "name.pptx", 0, 1072831);
+		System.out.println(result);
+
 	}
 
 	private static void upload(CondorScheddPortType schport) {
