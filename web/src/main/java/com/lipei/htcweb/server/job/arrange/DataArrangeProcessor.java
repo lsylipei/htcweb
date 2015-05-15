@@ -51,29 +51,33 @@ public class DataArrangeProcessor implements ItemProcessor {
 
 	private void updateCPU(ServerDataDelegate server) {
 
-		long slots = -1;
+		long serid = -1;
 
 		Map<String, Cluster> map = server.getClusterMap();
 
 		{
 			CriteriaBuilder cb = em.getCriteriaBuilder();
 			CriteriaQuery<Long> cq = cb.createQuery(Long.class);
-			cq.select(cb.countDistinct(cq.from(Startd.class).get(AbstractClassAdsInfo_.serid)));
-			slots = em.createQuery(cq).getSingleResult();
+			Root<Startd> from = cq.from(Startd.class);
+			cq.select(cb.countDistinct(from.get(AbstractClassAdsInfo_.serid))).where(
+					cb.equal(from.get(AbstractClassAdsInfo_.server), server.getCondorServer()));
+
+			cq.select(from.get(AbstractClassAdsInfo_.serid))
+					.where(cb.equal(from.get(AbstractClassAdsInfo_.server), server.getCondorServer()))
+					.orderBy(cb.desc(from.get(AbstractClassAdsInfo_.serid)));
+			serid = em.createQuery(cq).setMaxResults(1).getSingleResult();
 		}
 
 		{
 			CriteriaBuilder cb = em.getCriteriaBuilder();
 			CriteriaQuery<Startd> cq = cb.createQuery(Startd.class);
 			Root<Startd> from = cq.from(Startd.class);
-			cq.select(from).where(cb.equal(from.get(AbstractClassAdsInfo_.server), server.getCondorServer()));
-			cq.orderBy(cb.desc(from.get(AbstractClassAdsInfo_.serid)));
+			cq.select(from).where(cb.equal(from.get(AbstractClassAdsInfo_.server), server.getCondorServer()),
+					cb.equal(from.get(AbstractClassAdsInfo_.serid), serid));
 
 			TypedQuery<Startd> query = em.createQuery(cq);
-			query.setMaxResults((int) (slots));
 
 			List<Startd> list = query.getResultList();
-
 			Collection<Cluster> clusters = map.values();
 			for (Cluster cluster : clusters) {
 				cluster.reset();

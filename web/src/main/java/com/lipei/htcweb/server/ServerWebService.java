@@ -137,8 +137,8 @@ public class ServerWebService extends AbstractServer {
 			startd.setServer(condorServer);
 			list.add(startd);
 
-			System.out.println("slot:" + startd.getSlotID() + " load:" + startd.getLoadAvg() + " condor:"
-					+ startd.getCondorLoadAvg());
+			System.out.println("slot:" + startd.getSlotID() + " act: " + startd.getActivity() + " load:"
+					+ startd.getLoadAvg() + " condor:" + startd.getCondorLoadAvg());
 		}
 
 		ads = colport.queryScheddAds(null);
@@ -161,9 +161,9 @@ public class ServerWebService extends AbstractServer {
 
 			int cluster = schport.newCluster(trans).getInteger();
 
-			int interval = 50000;
+			int interval = 5000;
 
-			for (int i = 0; i < 999999; i += interval) {
+			for (int i = 0; i < 99999; i += interval) {
 
 				int job = schport.newJob(trans, cluster).getInteger();
 				String args = "com.lipei.condor.test.Brute " + i + " " + (i + interval - 1);

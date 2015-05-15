@@ -84,7 +84,7 @@ public class Cluster {
 			cpuUsage = (int) (100 * ((float) sum / usednum) * ((float) usednum / slotnum));
 		}
 
-		log.log(Level.SEVERE, refStartd.getMachine() + " cpuUsage is :" + cpuUsage);
+		log.log(Level.SEVERE, refStartd.getMachine() + " cpuUsage is :" + cpuUsage + " working slot: " + usednum);
 		cpuGauge.setValue(cpuUsage);
 	}
 

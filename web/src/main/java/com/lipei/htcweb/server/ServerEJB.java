@@ -58,7 +58,7 @@ public class ServerEJB {
 		return server;
 	}
 
-	// @Schedule(hour = "*", minute = "*", second = "*/5", persistent = false)
+	@Schedule(hour = "*", minute = "*", second = "*/5", persistent = false)
 	public void dataGetherJob() {
 
 		JobOperator op = BatchRuntime.getJobOperator();
